@@ -2,59 +2,92 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleCarController : MonoBehaviour
+// INHERITANCE
+public class SimpleCarController : Vehicle
 {
-    public List<AxleInfo> axleInfos; // the information about each individual axle
-    public float maxMotorTorque; // maximum torque the motor can be apply to wheel
-    public float maxSteeringAngle; // maximum steer angle the wheel can have
+    // Wheel Meshes
+    // Front
+    public Transform frontLeftWheelMesh;
+    public Transform frontRightWheelMesh;
+    // Rear
+    public Transform rearLeftWheelMesh;
+    public Transform rearRightWheelMesh;
+    // Wheel Colliders
+    // Front
+    public WheelCollider wheelFL;
+    public WheelCollider wheelFR;
+    // Rear
+    public WheelCollider wheelRL;
+    public WheelCollider wheelRR;
+    public float maxTorque = 500f;
+    public float brakeTorque = 1000f;
+    // max wheel turn angle;
+    public float maxWheelTurnAngle = 30f; // degrees
+                                          // car's center of mass
+    public Vector3 centerOfMass = new Vector3(0f, 0f, 0f); // unchanged
+    public Vector3 eulertest;
+    // PRIVATE
+    // acceleration increment counter
+    private float torquePower = 0f;
+    // turn increment counter
+    private float steerAngle = 30f;
 
-    // Finds the corresponding visual wheel
-    // correctly appliesthe transform
-    public void ApplyLocalPositionToVisuals(WheelCollider collider)
+    void Start()
     {
-        if(collider.transform.childCount == 0)
-        {
-            return;
-        }
-
-        Transform visualWheel = collider.transform.GetChild(0);
-
-        Vector3 position;
-        Quaternion rotation;
-        collider.GetWorldPose(out position, out rotation);
-
-        visualWheel.transform.position = position;
-        visualWheel.transform.rotation = rotation;
+        GetComponent<Rigidbody>().centerOfMass = centerOfMass;
     }
-
+    // Visual updates
+    void Update()
+    {
+        WheelMovement();
+    }
+    // Physics updates
     void FixedUpdate()
     {
-        float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
-
-        foreach (AxleInfo axleInfo in axleInfos) {
-            if (axleInfo.steering)
-            {
-                axleInfo.leftWheel.steerAngle = steering;
-                axleInfo.rightWheel.steerAngle = steering;
-            }
-
-            if (axleInfo.motor)
-            {
-                axleInfo.leftWheel.motorTorque = motor;
-                axleInfo.rightWheel.motorTorque = motor;
-            }
-            ApplyLocalPositionToVisuals(axleInfo.leftWheel);
-            ApplyLocalPositionToVisuals(axleInfo.rightWheel);
-        }
+        Move();
     }
-}
 
-[System.Serializable]
-public class AxleInfo
-{
-    public WheelCollider leftWheel;
-    public WheelCollider rightWheel;
-    public bool motor; // is this wheel attached to motor?
-    public bool steering; // does this wheel apply steer angle?
+    // POLYMORPHISM
+    public override void Move()
+    {
+        // CONTROLS - FORWARD & RearWARD
+        if (Input.GetKey(KeyCode.Space))
+        {
+            // BRAKE
+            torquePower = 0f;
+            wheelRL.brakeTorque = brakeTorque;
+            wheelRR.brakeTorque = brakeTorque;
+        }
+        else
+        {
+            // SPEED
+            torquePower = maxTorque * Mathf.Clamp(Input.GetAxis("Vertical"), -1, 1);
+            wheelRL.brakeTorque = 0f;
+            wheelRR.brakeTorque = 0f;
+        }
+        // Apply torque
+        wheelRR.motorTorque = torquePower;
+        wheelRL.motorTorque = torquePower;
+        // CONTROLS - LEFT & RIGHT
+        // apply steering to front wheels
+        steerAngle = maxWheelTurnAngle * Input.GetAxis("Horizontal");
+        wheelFL.steerAngle = steerAngle;
+        wheelFR.steerAngle = steerAngle;
+    }
+
+    private void WheelMovement()
+    {
+        //changing tyre direction
+        Vector3 temp = frontLeftWheelMesh.localEulerAngles;
+        Vector3 temp1 = frontRightWheelMesh.localEulerAngles;
+        temp.y = wheelFL.steerAngle - (frontLeftWheelMesh.localEulerAngles.z);
+        frontLeftWheelMesh.localEulerAngles = temp;
+        temp1.y = wheelFR.steerAngle - (frontRightWheelMesh.localEulerAngles.z);
+        frontRightWheelMesh.localEulerAngles = temp1;
+        // Wheel rotation
+        frontLeftWheelMesh.Rotate(wheelFL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        frontRightWheelMesh.Rotate(wheelFR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        rearLeftWheelMesh.Rotate(wheelRL.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+        rearRightWheelMesh.Rotate(wheelRR.rpm / 60 * 360 * Time.deltaTime, 0, 0);
+    }
 }
