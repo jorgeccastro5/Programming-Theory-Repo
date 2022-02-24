@@ -230,6 +230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 277844050}
   - component: {fileID: 277844051}
+  - component: {fileID: 277844052}
   m_Layer: 0
   m_Name: spaceship
   m_TagString: Untagged
@@ -244,7 +245,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277844049}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -33, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -269,6 +270,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2231cecca6e4d514e9760002a3a61040, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 20000
+--- !u!54 &277844052
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277844049}
+  serializedVersion: 2
+  m_Mass: 2000
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &485024697
 GameObject:
   m_ObjectHideFlags: 0
@@ -953,7 +971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTarget: {fileID: 1810629320}
-  sSpeed: 5
+  sSpeed: 10000
   dist: {x: 0, y: 0, z: 0}
   lookTarget: {fileID: 1983246329}
 --- !u!1 &814029668
