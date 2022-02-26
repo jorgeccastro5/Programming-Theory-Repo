@@ -5,8 +5,9 @@ using UnityEngine;
 //************** INHERITANCE **************
 public class SimpleSpaceshipController : Vehicle
 {
-    public float speed = 10.0f;
+    public float horsePower = 25000f;
     private Rigidbody shipRb;
+    private float maxSpeed = 300; // kph
 
     // Start is called before the first frame update
     void Start()
@@ -25,21 +26,24 @@ public class SimpleSpaceshipController : Vehicle
     {
         if (Input.GetKey(KeyCode.Space))
         {
-            shipRb.AddForce(transform.forward * speed);
+            if(GetSpeed() < maxSpeed)
+            {
+                shipRb.AddForce(transform.forward * horsePower);
+            }
         }
         else
         {
-            if(shipRb.velocity.magnitude > 0)
+            if(GetSpeed() > 0)
             {
-                shipRb.AddForce(-transform.forward * (speed / 2));
-            }
-
-            if(shipRb.velocity.x < 0 || shipRb.velocity.y < 0 || shipRb.velocity.z < 0)
-            {
-                shipRb.velocity = Vector3.zero;
+                shipRb.AddForce(-transform.forward * (horsePower / 2));
             }
         }
 
-        Debug.Log("Velocity: " + shipRb.velocity);
+        Debug.Log("Speed: " + GetSpeed() + " kph");
+    }
+
+    private float GetSpeed()
+    {
+        return Mathf.Round(shipRb.velocity.magnitude * 3.6f);
     }
 }
