@@ -4,9 +4,9 @@
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs
-[Uu]serSettings/Layouts
-[Pp]rojectSettings/MemorySettings.asset
-[Pp]rojectSettings/boot.config
+UserSettings/Layouts/
+ProjectSettings/MemorySettings.asset
+ProjectSettings/boot.config
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
