@@ -8,9 +8,10 @@ public class SimpleSpaceshipController : Vehicle
     public float horsePower = 25000f;
     private Rigidbody shipRb;
     private float maxSpeed = 300; // kph
+    [SerializeField] private float turnSpeed = 100f;
     [SerializeField] private float yAxisOffset = 2f;
     [SerializeField] private float maxYPosition = 4f;
-    [SerializeField]private float yPositionOriginal = 2f;
+    [SerializeField] private float yPositionOriginal = 2f;
 
     // Start is called before the first frame update
     void Start()
@@ -33,11 +34,11 @@ public class SimpleSpaceshipController : Vehicle
     //************** POLYMORPHISM **************
     public override void Move()
     {
-        // TERMINAR
-        float verticalAxis = Input.GetAxis("Vertical");
-        Vector3 newPosition;
+        /*float verticalInput = Input.GetAxis("Vertical");
+        transform.Rotate(transform.right, verticalInput * turnSpeed * Time.deltaTime);*/
 
-        
+        float horizontalInput = Input.GetAxis("Horizontal");
+        transform.Rotate(transform.up, horizontalInput * turnSpeed * Time.deltaTime);
     }
 
     private void Accelerate()
