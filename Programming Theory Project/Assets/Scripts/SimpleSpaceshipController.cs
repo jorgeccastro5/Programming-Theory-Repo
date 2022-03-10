@@ -5,64 +5,94 @@ using UnityEngine;
 //************** INHERITANCE **************
 public class SimpleSpaceshipController : Vehicle
 {
-    public float horsePower = 25000f;
-    private Rigidbody shipRb;
-    private float maxSpeed = 300; // kph
-    [SerializeField] private float turnSpeed = 100f;
-    [SerializeField] private float yAxisOffset = 2f;
-    [SerializeField] private float maxYPosition = 4f;
-    [SerializeField] private float yPositionOriginal = 2f;
+    Transform _transform;
+    Rigidbody _rigidbody;
 
-    // Start is called before the first frame update
+    public Camera Camera;
+    public Transform CameraTarget;
+    [Range(0, 1)] public float CameraSpring = 0.96f;
+
+    public float MinThrust = 600f;
+    public float MaxThrust = 1200f;
+    float _currentThrust;
+    public float ThrustIncreaseSpeed = 400f;
+
+    float _deltaPitch;
+    public float PitchIncreaseSpeed = 300f;
+
+    float _deltaRoll;
+    public float RollIncreaseSpeed = 300f;
+
     void Start()
     {
-        shipRb = GetComponent<Rigidbody>();
-        transform.position = new Vector3(transform.position.x, yPositionOriginal, transform.position.z);
+        _transform = transform;
+        _rigidbody = GetComponent<Rigidbody>();
+
+        Camera.transform.SetParent(null);
     }
 
     void Update()
     {
+        //************** ABSTRACTION **************
         Move();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        Accelerate();
+        var localRotation = _transform.localRotation;
+        localRotation *= Quaternion.Euler(0f, 0f, _deltaRoll);
+        localRotation *= Quaternion.Euler(_deltaPitch, 0f, 0f);
+        _transform.localRotation = localRotation;
+        _rigidbody.velocity = _transform.forward * (_currentThrust * Time.fixedDeltaTime);
+
+        Vector3 cameraTargetPosition = _transform.position + _transform.forward * -8f + new Vector3(0f, 3f, 0f);
+        var cameraTransform = Camera.transform;
+
+        cameraTransform.position = cameraTransform.position * CameraSpring + cameraTargetPosition * (1 - CameraSpring);
+        Camera.transform.LookAt(CameraTarget);
     }
 
     //************** POLYMORPHISM **************
     public override void Move()
     {
-        /*float verticalInput = Input.GetAxis("Vertical");
-        transform.Rotate(transform.right, verticalInput * turnSpeed * Time.deltaTime);*/
-
-        float horizontalInput = Input.GetAxis("Horizontal");
-        transform.Rotate(transform.up, horizontalInput * turnSpeed * Time.deltaTime);
-    }
-
-    private void Accelerate()
-    {
+        var thrustDelta = 0f;
         if (Input.GetKey(KeyCode.Space))
         {
-            if (GetSpeed() < maxSpeed)
-            {
-                shipRb.AddForce(transform.forward * horsePower);
-            }
+            thrustDelta += ThrustIncreaseSpeed;
         }
-        else
+
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            if (GetSpeed() > 0)
-            {
-                shipRb.AddForce(-transform.forward * (horsePower / 2));
-            }
+            thrustDelta -= ThrustIncreaseSpeed;
         }
 
-        Debug.Log("Speed: " + GetSpeed() + " kph");
-    }
+        _currentThrust += thrustDelta * Time.deltaTime;
+        _currentThrust = Mathf.Clamp(_currentThrust, MinThrust, MaxThrust);
 
-    private float GetSpeed()
-    {
-        return Mathf.Round(shipRb.velocity.magnitude * 3.6f);
+        _deltaPitch = 0f;
+        if (Input.GetKey(KeyCode.S))
+        {
+            _deltaPitch -= PitchIncreaseSpeed;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            _deltaPitch += PitchIncreaseSpeed;
+        }
+
+        _deltaPitch *= Time.deltaTime;
+
+        _deltaRoll = 0f;
+        if (Input.GetKey(KeyCode.A))
+        {
+            _deltaRoll += RollIncreaseSpeed;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            _deltaRoll -= RollIncreaseSpeed;
+        }
+
+        _deltaRoll *= Time.deltaTime;
     }
 }
