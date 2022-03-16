@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 36673867}
   - component: {fileID: 36673872}
   - component: {fileID: 36673871}
+  - component: {fileID: 36673873}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -399,6 +400,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 36673866}
   m_CullTransparentMesh: 1
+--- !u!114 &36673873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36673866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc90f3344b87afc44953f891b09c17be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &96702165
 GameObject:
   m_ObjectHideFlags: 0
@@ -481,7 +494,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 96702168}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 36673873}
+        m_TargetAssemblyTypeName: MenuUIHandler, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &96702168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -778,7 +803,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1646790013}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 36673873}
+        m_TargetAssemblyTypeName: MenuUIHandler, Assembly-CSharp
+        m_MethodName: GoToRacingSelector
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1646790013
 MonoBehaviour:
   m_ObjectHideFlags: 0
