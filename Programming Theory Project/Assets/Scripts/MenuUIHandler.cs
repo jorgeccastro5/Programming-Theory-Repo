@@ -29,6 +29,18 @@ public class MenuUIHandler : MonoBehaviour
         SceneManager.LoadScene("Spaceship_Racing");
     }
 
+    public void PauseGame()
+    {
+        GameManager manager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        manager.PauseGameHandler();
+    }
+
+    public void ManageControlsScreen()
+    {
+        GameManager manager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        manager.ShowControlsHandler();
+    }
+
     public void Exit()
     {
 #if UNITY_EDITOR
