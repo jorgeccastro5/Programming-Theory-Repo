@@ -29,8 +29,6 @@ public class SimpleSpaceshipController : Vehicle
         _rigidbody = GetComponent<Rigidbody>();
 
         Camera.transform.SetParent(null);
-
-        Debug.Log("Start completed");
     }
 
     void Update()
