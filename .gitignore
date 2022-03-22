@@ -3,7 +3,14 @@
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
+<<<<<<< HEAD
 [Ll]ogs/
+=======
+[Ll]ogs
+UserSettings/Layouts/
+ProjectSettings/MemorySettings.asset
+ProjectSettings/boot.config
+>>>>>>> df641fc518b6e5f39ed89464edd6f0090c9f1da7
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
