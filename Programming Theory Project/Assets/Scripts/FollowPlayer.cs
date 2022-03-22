@@ -4,24 +4,16 @@ using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
 {
-    public GameObject player;
+    public Transform cameraTarget;
+    public float sSpeed = 5.0f;
+    public Vector3 dist;
+    public Transform lookTarget;
 
-    [SerializeField]
-    private Vector3 offset = new Vector3(0, 1.5f, -2.5f);
-
-    /*void Awake()
+    private void FixedUpdate()
     {
-        offset = new Vector3(-10, 2, -3);
-    }*/
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    void LateUpdate()
-    {
-        transform.position = player.transform.position + offset;
+        Vector3 dPos = cameraTarget.position + dist;
+        Vector3 sPos = Vector3.Lerp(transform.position, dPos, sSpeed * Time.deltaTime);
+        transform.position = sPos;
+        transform.LookAt(lookTarget.position);
     }
 }

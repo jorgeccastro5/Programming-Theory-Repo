@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Title.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Racing_Type_Selection.unity
+    guid: 4c8e0d21c3eb5024d94cfdb8e0089038
+  - enabled: 1
+    path: Assets/Scenes/Cart_Racing.unity
+    guid: 38c88a39ea5bbbc44b2a31e18bd9c801
+  - enabled: 1
+    path: Assets/Scenes/Spaceship_Racing.unity
+    guid: 618da89aac6baac42adbc602fbdba986
   m_configObjects: {}
